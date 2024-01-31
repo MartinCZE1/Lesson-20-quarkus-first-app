@@ -9,6 +9,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.acme.dao.PersonRepository;
 import org.acme.model.Person;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Random;
 @Path("/hello")
 public class GreetingResource {
     @Inject
-    EntityManager em;
+    PersonRepository personRepository;
 
 
     @GET
@@ -28,10 +29,7 @@ public class GreetingResource {
         Person p = new Person();
         p.setName("Some test person");
         p.setAge(new Random().nextInt(100));
-        em.persist(p);
-
-        List<Person> persons = em.createQuery("select p from Person p", Person.class).getResultList();
-
+        List<Person> persons = personRepository.listAll();
         return "Hello from RESTEasy Reactive" + persons;
     }
 }
