@@ -6,13 +6,25 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "test-person-table")
-public class Person implements Serializable {
+public class Person extends Color implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     String name;
     int age;
+    String color;
+
+    public Person() {
+    }
+
+
+
+    public Person(String name, int age, String color) {
+        this.name = name;
+        this.age = age;
+        this.color = color;
+    }
 
     public long getId() {
         return id;
@@ -38,6 +50,13 @@ public class Person implements Serializable {
         this.age = age;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
     @Override
     public String toString() {
         return "Person{" +

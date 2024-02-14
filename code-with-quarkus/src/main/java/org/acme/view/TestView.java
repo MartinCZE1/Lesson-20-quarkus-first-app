@@ -4,7 +4,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import org.acme.dao.PersonRepository;
 import org.acme.model.Person;
 
 import java.util.List;
@@ -12,32 +13,61 @@ import java.util.List;
 @Named
 @RequestScoped
 public class TestView {
-
     @Inject
-    EntityManager em;
+    PersonRepository personRepository;
 
-    private int number;
-    List<Person> persons;
+    List<Person> personList;
+
+    String name;
+
+    int age;
+
+    String color;
+
+
 
     @PostConstruct
-    public void init(){
-        number = 10;
-        persons = em.createQuery("select p from Person p", Person.class).getResultList();
+    public void init() {
+        personList = personRepository.listAll();
     }
 
-    public int getNumber() {
-        return number;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public String getName() {
+        return name;
     }
 
-    public List<Person> getPersons() {
-        return persons;
+    public String getColor() {
+        return color;
     }
 
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public List<Person> getPersonList() {
+        return personList;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setPersonList(List<Person> personList) {
+        this.personList = personList;
+    }
+
+    @Transactional
+    public void savePerson() {
+        Person person = new Person(name, age, color);
+        personRepository.persist(person);
+        personList.add(person);
+        System.out.println("Saved " + person);
     }
 }

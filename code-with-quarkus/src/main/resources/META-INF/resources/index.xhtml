@@ -7,13 +7,21 @@
 <h:head>
     <title>Home page</title>
 </h:head>
-<h:body>
+<h:body >
     <h:form>
-        <p:spinner id="spinner" value="#{testView.number}"/>
+        <div class="card" style="margin: auto; width: 75% ">
+            <h:outputLabel for="person-name" value="Name: "/>
+            <p:inputText id="person-name" value="#{testView.name}"/>
 
+            <h:outputLabel for="person-age" value="Age: "/>
+            <p:spinner id="person-age" value="#{testView.age}"/>
 
-        <div class="card" style="position: absolute; margin-left: 10%; width: 80%; ">
-            <p:dataTable var="person" value="#{testView.persons}" paginator="true">
+            <h:outputLabel for="person-color" value="Color: "/>
+            <p:inputText id="person-color" value="#{testView.color}"/>
+
+            <p:commandButton value="Submit" action="#{testView.savePerson}" update="personTable"> </p:commandButton>
+
+            <p:dataTable id="personTable" var="person" value="#{testView.personList}">
                 <p:column headerText="Id">
                     <h:outputText value="#{person.id}"/>
                 </p:column>
@@ -25,6 +33,10 @@
                 <p:column headerText="Age">
                     <h:outputText value="#{person.age}"/>
                 </p:column>
+
+                <p:column headerText="Color">
+                <h:outputText value="#{person.color}"/>
+            </p:column>
             </p:dataTable>
         </div>
     </h:form>
